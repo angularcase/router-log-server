@@ -9,7 +9,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
 
-export enum Mac {
+export enum MacAddress {
   Z = 'b2:4b:4d:84:24:57',
   D = '70:32:17:91:b2:3e',
   T = '08:c5:e1:ec:53:93',
@@ -41,7 +41,7 @@ export class SyslogService implements OnModuleInit {
       console.log(parsed);
 
       if (parsed) {
-        const macList = Object.values(Mac).map(m => m.toLowerCase());
+        const macList = Object.values(MacAddress).map(m => m.toLowerCase());
         const parsedMac = parsed.mac_addr.toLowerCase();
         
         if (macList.includes(parsedMac)) {
@@ -102,4 +102,10 @@ export class SyslogService implements OnModuleInit {
     parsed = parsed.tz('Europe/Warsaw');
     return parsed.format('YYYY-MM-DDTHH:mm:ssZ');
   }
+}
+
+export interface LineData {
+  date: string;
+  action: string;
+  mac_addr: string;
 }
