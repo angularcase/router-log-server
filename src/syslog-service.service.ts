@@ -8,11 +8,10 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-
 export enum MacAddress {
   Z = 'b2:4b:4d:84:24:57',
   D = '70:32:17:91:b2:3e',
-  T = '08:c5:e1:ec:53:93',
+  T = '62:49:ef:39:b3:6d',
   P = '14:ac:60:df:13:63',
   G = '8e:3b:ae:57:0c:e4',
 }
@@ -41,9 +40,9 @@ export class SyslogService implements OnModuleInit {
       console.log(parsed);
 
       if (parsed) {
-        const macList = Object.values(MacAddress).map(m => m.toLowerCase());
+        const macList = Object.values(MacAddress).map((m) => m.toLowerCase());
         const parsedMac = parsed.mac_addr.toLowerCase();
-        
+
         if (macList.includes(parsedMac)) {
           this.saveLogEntry(parsed.date, parsed.action, parsed.mac_addr);
         }
@@ -98,7 +97,7 @@ export class SyslogService implements OnModuleInit {
     dayjs.extend(timezone);
 
     const currentYear = new Date().getFullYear();
-    let parsed = dayjs(`${dateString} ${currentYear}`, "MMM DD HH:mm:ss YYYY");
+    let parsed = dayjs(`${dateString} ${currentYear}`, 'MMM DD HH:mm:ss YYYY');
     parsed = parsed.tz('Europe/Warsaw');
     return parsed.format('YYYY-MM-DDTHH:mm:ssZ');
   }

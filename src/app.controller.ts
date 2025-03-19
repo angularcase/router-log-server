@@ -7,8 +7,8 @@ import { LineData, MacAddress } from './syslog-service.service';
 export class AppController {
   private readonly LOG_FILE = path.join(__dirname, '..', 'logs.json');
 
-  @Get()
-  home(): any {
+  @Get('live-data')
+  liveData(): any {
     if (fs.existsSync(this.LOG_FILE)) {
       try {
         const content = fs.readFileSync(this.LOG_FILE, 'utf8');
@@ -16,13 +16,13 @@ export class AppController {
 
         const result: { [key: string]: 'in' | 'out' } = {};
 
-        for (const mac of Object.values(MacAddress)) {
 
+        for (const key of Object.keys(MacAddress)) {
           let state: 'in' | 'out' = 'out';
+          const mac = MacAddress[key as keyof typeof MacAddress];
 
           for (let i = logs.length - 1; i >= 0; i--) {
             const entry = logs[i];
-
             if (entry.mac_addr.toLowerCase() === mac.toLowerCase()) {
               if (entry.action === 'Auth') {
                 state = 'in';
@@ -32,7 +32,7 @@ export class AppController {
               break;
             }
           }
-          result[mac] = state;
+          result[key] = state;
         }
 
         return result;
