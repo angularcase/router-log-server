@@ -16,22 +16,20 @@ export class AppController {
 
         const result: { [key: string]: 'in' | 'out' } = {};
 
-        // Dla każdego adresu MAC z naszego enuma:
         for (const mac of Object.values(MacAddress)) {
-          // Przyjmujemy domyślnie, że urządzenie jest "out"
+
           let state: 'in' | 'out' = 'out';
-          // Przeglądamy logi od końca (czyli najnowsze wpisy najpierw)
+
           for (let i = logs.length - 1; i >= 0; i--) {
             const entry = logs[i];
-            // Porównujemy adresy MAC (bez uwzględniania wielkości liter)
+
             if (entry.mac_addr.toLowerCase() === mac.toLowerCase()) {
-              // Pierwszy napotkany wpis decyduje – sprawdzamy akcję
               if (entry.action === 'Auth') {
                 state = 'in';
               } else if (entry.action === 'Deauth_ind') {
                 state = 'out';
               }
-              break; // kończymy przeszukiwanie logów dla tego MAC
+              break;
             }
           }
           result[mac] = state;
