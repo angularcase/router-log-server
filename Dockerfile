@@ -10,7 +10,7 @@ COPY package*.json ./
 # Instalacja zależności
 RUN npm install
 
-# Kopiowanie pozostałych plików projektu
+# Kopiowanie pozostałych plików projektu (w tym folder assets)
 COPY . .
 
 # Budowanie aplikacji (domyślnie buduje do katalogu dist)
@@ -31,9 +31,12 @@ RUN npm install --production
 # Kopiowanie zbudowanej aplikacji z etapu buildera
 COPY --from=builder /app/dist ./dist
 
+# Deklaracja folderu assets jako volume
+VOLUME ["/app/assets"]
+
 # Eksponowanie portów
-EXPOSE 3535         # Port TCP dla NestJS
-EXPOSE 1514/udp     # Port UDP
+EXPOSE 3535
+EXPOSE 1514/udp
 
 # Komenda startowa
 CMD ["node", "dist/main"]

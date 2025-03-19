@@ -5,7 +5,7 @@ import { LineData, MacAddress } from './syslog-service.service';
 
 @Controller()
 export class AppController {
-  private readonly LOG_FILE = path.join(__dirname, '..', 'logs.json');
+  private readonly LOG_FILE = path.join(__dirname, '../assets/', 'logs.json');
 
   @Get('live-data')
   liveData(): any {

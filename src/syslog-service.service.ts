@@ -26,7 +26,7 @@ interface LogEntry {
 
 @Injectable()
 export class SyslogService implements OnModuleInit {
-  private readonly LOG_FILE = path.join(__dirname, '..', 'logs.json');
+  private readonly LOG_FILE = path.join(__dirname, '../assets/', 'logs.json');
 
   onModuleInit() {
     const SYSLOG_PORT = 1514;
