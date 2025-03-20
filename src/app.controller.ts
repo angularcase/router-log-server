@@ -14,11 +14,13 @@ export class AppController {
         const content = fs.readFileSync(this.LOG_FILE, 'utf8');
         const logs = JSON.parse(content) as LineData[];
 
-        const result: { [key: string]: 'in' | 'out' } = {};
-
+        const result: {
+          [key: string]: { state: 'in' | 'out'; date: string };
+        } = {};
 
         for (const key of Object.keys(MacAddress)) {
           let state: 'in' | 'out' = 'out';
+          let date = '';
           const mac = MacAddress[key as keyof typeof MacAddress];
 
           for (let i = logs.length - 1; i >= 0; i--) {
@@ -29,10 +31,11 @@ export class AppController {
               } else if (entry.action === 'Deauth_ind') {
                 state = 'out';
               }
+              date = entry.date;
               break;
             }
           }
-          result[key] = state;
+          result[key] = { state: state, date: date };
         }
 
         return result;

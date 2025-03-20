@@ -35,9 +35,12 @@ export class SyslogService implements OnModuleInit {
     server.on('message', (msg, rinfo) => {
       const logLine = msg.toString();
 
-      const parsed = this.parseLogLine(logLine);
+      console.log('logLine', logLine);
 
-      console.log(parsed);
+      const cleanLogLine = logLine.replace(/^<\d+>\s*/, '');
+      const parsed = this.parseLogLine(cleanLogLine);
+
+      console.log('parsed', parsed);
 
       if (parsed) {
         const macList = Object.values(MacAddress).map((m) => m.toLowerCase());
@@ -50,7 +53,7 @@ export class SyslogService implements OnModuleInit {
     });
 
     server.bind(SYSLOG_PORT, () => {
-      console.log(`UDP Syslog server listening on port ${SYSLOG_PORT}`);
+      console.log(`V2.UDP Syslog server listening on port ${SYSLOG_PORT}`);
     });
   }
 
@@ -68,7 +71,7 @@ export class SyslogService implements OnModuleInit {
     }
 
     return {
-      date: this.parsePolishTimestamp(match.groups.date),
+      date: this.parseTimestamp(match.groups.date),
       action: match.groups.action,
       mac_addr: match.groups.mac,
     };
@@ -91,15 +94,18 @@ export class SyslogService implements OnModuleInit {
     fs.writeFileSync(this.LOG_FILE, JSON.stringify(logsArray, null, 2), 'utf8');
   }
 
-  public parsePolishTimestamp(dateString: string): string {
+  public parseTimestamp(dateString: string): string {
     dayjs.extend(customParseFormat);
     dayjs.extend(utc);
     dayjs.extend(timezone);
 
     const currentYear = new Date().getFullYear();
-    let parsed = dayjs(`${dateString} ${currentYear}`, 'MMM DD HH:mm:ss YYYY');
-    parsed = parsed.tz('Europe/Warsaw');
-    return parsed.format('YYYY-MM-DDTHH:mm:ssZ');
+    const parsed = dayjs(
+      `${dateString} ${currentYear}`,
+      'MMM DD HH:mm:ss YYYY',
+    );
+    // parsed = parsed.tz('Europe/Warsaw');
+    return parsed.format('YYYY-MM-DDTHH:mm');
   }
 }
 
