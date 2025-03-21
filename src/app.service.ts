@@ -1,5 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import path from 'path';
+import * as fs from 'fs';
+import axios from 'axios';
 
 export enum MacAddress {
   Z = 'b2:4b:4d:84:24:57',
@@ -61,9 +63,7 @@ export class AppService implements OnModuleInit {
   private logs: LogEntry[] = [];
 
   onModuleInit() {
-    this.loadLogsFromFile();
-    this.pollRouter();
-    setInterval(() => this.pollRouter(), 10000);
+c
   }
 
   private loadLogsFromFile(): void {
@@ -87,7 +87,7 @@ export class AppService implements OnModuleInit {
     );
   }
 
-  private async getConnectedDevicesRaw(): Promise<any> {
+  public async getConnectedDevicesRaw(): Promise<any> {
     const response = await axios.get(
       'http://localhost:3537/get-connected-devices',
     );

@@ -9,4 +9,9 @@ export class AppController {
   getLiveData() {
     return this.appService.getLiveData();
   }
+
+  @Get('get-connected-devices-raw')
+  getConnectedDevices() {
+    return this.appService.getConnectedDevicesRaw();
+  }
 }
