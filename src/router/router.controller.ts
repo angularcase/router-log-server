@@ -10,7 +10,7 @@ export class RouterController {
 
     @Get('/get-connected-devices')
     getConnectedDevices() {
-        return this.routerService.getConnectedDevices();
+        return this.routerService.getConnectedMacsRaw();
     }
 
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import axios from 'axios';
-import { Device, RouterService } from './router.interface';
+import { RouterService } from './router.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -14,9 +14,13 @@ export class AsusRouterService implements RouterService {
         this.url = this.configService.get<string>('ROUTER_ADAPTER_URL');
     }
 
-    async getConnectedDevices(): Promise<Device[]> {
-        console.log(this.url);
+    async getConnectedMacs(): Promise<string[]> {
+        const raw = await this.getConnectedMacsRaw();
+        const devices: string[] = Object.keys(raw);
+        return devices;
+    }
 
+    async getConnectedMacsRaw(): Promise<any> {
         const response = await axios.get(
             `${this.url}/get-connected-devices`);
           return response.data;

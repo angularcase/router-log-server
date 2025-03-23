@@ -1,0 +1,46 @@
+version: '3.0'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+  front:
+    image: angularcase/router-log-server-front:latest
+    pull_policy: always
+    ports:
+      - "3536:3536"
+
+  backend:
+    image: angularcase/router-log-server:latest
+    pull_policy: always
+    ports:
+      - "3535:3535"
+    depends_on:
+      - mongo  # Upewnia się, że Mongo wystartuje przed backendem
+    environment:
+      MONGO_URL: mongodb://root:example@mongo:27017/my-db?authSource=admin
+
+  python-backend:
+    image: angularcase/router-log-server-python:latest
+    pull_policy: always
+    environment:
+      ROUTER_HOST: "78.88.109.88"
+      ROUTER_LOGIN: "dominik"
+      ROUTER_PASSWORD: "Mosiezna2210_!#r"
+      ROUTER_SSL: "1"
+      ROUTER_LISTENING_PORT: 3357
+    ports:
+      - "3537:3537"
+    restart: always
+
+volumes:
+  mongo_data:
