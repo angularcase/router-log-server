@@ -8,7 +8,8 @@ import {
 import { Device } from 'src/devices-manager/devices-manager.service';
   
   @WebSocketGateway({
-    cors: { origin: '*' }
+    cors: { origin: '*' },
+    transports: ['websocket']
   })
   export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
