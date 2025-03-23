@@ -7,8 +7,9 @@ export class AppController {
     private readonly routerService: AsusRouterService
   ) {}
 
-  @Get('/router/get-connected-devices')
+  @Get('/get-connected-devices')
   getConnectedDevices() {
     return this.routerService.getConnectedDevices();
   }
+  
 }

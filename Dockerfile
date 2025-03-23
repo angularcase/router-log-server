@@ -31,6 +31,9 @@ RUN npm install --production
 # Kopiowanie zbudowanej aplikacji z etapu buildera
 COPY --from=builder /app/dist ./dist
 
+# Kopiowanie pliku .env
+COPY .env ./
+
 # Deklaracja folderu assets jako volume
 VOLUME ["/app/assets"]
 
