@@ -14,8 +14,7 @@ export class ActionsManagerService {
   
     async save(device: Device): Promise<void> {
       const newDevice = new this.deviceModel(device);
-      const id = await newDevice.save();
-      this.logger.log(id);
+      await newDevice.save();
     }
   
     async getLast(mac: string): Promise<Device | null> {
@@ -23,8 +22,6 @@ export class ActionsManagerService {
         .findOne({ mac })
         .sort({ date: -1 })
         .exec();
-
-      this.logger.log(device);
 
       return device;
     }

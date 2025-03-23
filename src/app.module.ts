@@ -8,6 +8,7 @@ import { DevicesManagerService } from './devices-manager/devices-manager.service
 import { ActionsManagerService } from './actions-manager/actions-manager.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceSchema } from './mongoose/device.schema';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { DeviceSchema } from './mongoose/device.schema';
       }),
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: 'Device', schema: DeviceSchema }])
+    MongooseModule.forFeature([{ name: 'Device', schema: DeviceSchema }]),
+    ScheduleModule.forRoot()
   ],
   controllers: [AppController, RouterController],
   providers: [AppService, AsusRouterService, DevicesManagerService, ActionsManagerService],

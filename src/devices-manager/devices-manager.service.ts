@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Interval } from '@nestjs/schedule';
 import { ActionsManagerService } from 'src/actions-manager/actions-manager.service';
 
 
@@ -14,50 +15,36 @@ export class DevicesManagerService {
         '50:14:79:39:43:21',
     ];
 
-    private whiteDevices: Device[];
-
     constructor(
         private actionsManager: ActionsManagerService
     ) {
-        this.whiteDevices = this.whiteMacs.map<Device>((mac) => {
-            return {
-                mac: mac,
-                state: false,
-                date: ''
-            }
-        });
     }
 
-    async initialize() {
-        for (let whiteDevice of this.whiteDevices) {
-            const found = await this.actionsManager.getLast(whiteDevice.mac);
-            if (found) {
-                whiteDevice = found;
+    async update(allMacs: string[]) {
+        for (const whiteMac of this.whiteMacs) {
+            const whiteOnline = allMacs.includes(whiteMac);
+            const found = await this.actionsManager.getLast(whiteMac);
+    
+            if (!found || found.state !== whiteOnline) {
+                await this.actionsManager.save({
+                    mac: whiteMac,
+                    state: whiteOnline,
+                    date: new Date().toISOString()
+                });
             }
         }
-    }
+    }    
 
-    getDevices() {
-        return this.whiteDevices;
-    }
-
-    update(connectedMacs: string[]) {
-        connectedMacs = connectedMacs.map(mac => mac.toLocaleLowerCase());
-    
-        this.whiteDevices.forEach(whiteDevice => {
-            if (connectedMacs.includes(whiteDevice.mac.toLowerCase())) {
-                whiteDevice.state = true;
-                this.deviceChangedState(whiteDevice, true);
-            } else {
-                whiteDevice.state = false;
-                this.deviceChangedState(whiteDevice, false);
+    async getDevices() {
+        const reply: Device[] = [];
+        for (const whiteMac of this.whiteMacs) {
+            const found = await this.actionsManager.getLast(whiteMac);
+            if (found) {
+                reply.push(found);
             }
-        });
-    }
+        }
 
-    private deviceChangedState(device: Device, newState: boolean) {
-        device.date = new Date().toISOString();
-        this.actionsManager.save(device);
+        return reply;
     }
 
 }
