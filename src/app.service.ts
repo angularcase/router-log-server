@@ -63,7 +63,6 @@ export class AppService implements OnModuleInit {
   private logs: LogEntry[] = [];
 
   onModuleInit() {
-c
   }
 
   private loadLogsFromFile(): void {
@@ -89,7 +88,7 @@ c
 
   public async getConnectedDevicesRaw(): Promise<any> {
     const response = await axios.get(
-      'http://localhost:3537/get-connected-devices',
+      'http://python-backend:3537/get-connected-devices',
     );
     return response.data;
   }

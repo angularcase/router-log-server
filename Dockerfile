@@ -36,7 +36,6 @@ VOLUME ["/app/assets"]
 
 # Eksponowanie portów
 EXPOSE 3535
-EXPOSE 1514/udp
 
 # Komenda startowa
 CMD ["node", "dist/main"]

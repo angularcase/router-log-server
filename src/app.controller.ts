@@ -1,17 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AsusRouterService } from './router/asus-router.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly routerService: AsusRouterService
+  ) {}
 
-  @Get('live-data')
-  getLiveData() {
-    return this.appService.getLiveData();
-  }
-
-  @Get('get-connected-devices-raw')
+  @Get('/router/get-connected-devices')
   getConnectedDevices() {
-    return this.appService.getConnectedDevicesRaw();
+    return this.routerService.getConnectedDevices();
   }
 }
