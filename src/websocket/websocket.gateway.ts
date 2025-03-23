@@ -1,5 +1,6 @@
 import {
   OnGatewayConnection,
+    OnGatewayDisconnect,
     WebSocketGateway,
     WebSocketServer,
   } from '@nestjs/websockets';
@@ -9,29 +10,39 @@ import { Device } from 'src/devices-manager/devices-manager.service';
   @WebSocketGateway({
     cors: { origin: '*' }
   })
-  export class WebsocketGateway implements OnGatewayConnection {
+  export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
-    onClientConnected: () => Promise<any> | undefined;
+    onGatewayConnectionAction: () => Promise<any> | undefined;
 
     @WebSocketServer()
     server: Server;
   
-    emit(devices: Device[]) {
-      this.server.emit(MessageId.ConnectedDevices, devices);
+    emit(messageId: MessageId, data: any) {
+      this.server.emit(messageId, data);
+    }
+
+    handleDisconnect(client: any) {
+      this.emit(MessageId.NumberOfClients, this.getNumberOfClients());
     }
 
     handleConnection(client: any, ...args: any[]) {
-      if (this.onClientConnected) {
-        this.onClientConnected();
+      this.emit(MessageId.NumberOfClients, this.getNumberOfClients());
+      if (this.onGatewayConnectionAction) {
+        this.onGatewayConnectionAction();
       }
     }
 
-    initialize(callback: () => Promise<any>) {
-      this.onClientConnected = callback;
+    setOnGatewayConnectionAction(callback: () => Promise<any>) {
+      this.onGatewayConnectionAction = callback;
+    }
+
+    private getNumberOfClients() {
+      return this.server.sockets.sockets.size;
     }
   }
 
 export enum MessageId {
-  ConnectedDevices = 'connected-devices'
+  ConnectedDevices = 'connected-devices',
+  NumberOfClients = 'number-of-clients'
 }
   

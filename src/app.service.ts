@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { DevicesManagerService } from './devices-manager/devices-manager.service';
 import { AsusRouterService } from './router/asus-router.service';
 import { Interval } from '@nestjs/schedule';
-import { WebsocketGateway } from './websocket/websocket.gateway';
+import { MessageId, WebsocketGateway } from './websocket/websocket.gateway';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -24,17 +24,16 @@ export class AppService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    this.websocketGateway.initialize(async () => {
+    this.websocketGateway.setOnGatewayConnectionAction(async () => {
       const devices = await this.devicesManager.getDevices();
-      this.websocketGateway.emit(devices);
+      this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
     });
-    await this.refresh();
   }
 
   async broadcastChanges() {
     this.logger.log('broadcastChanges');
     const devices = await this.devicesManager.getDevices();
-    this.websocketGateway.emit(devices);
+    this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
   }
 
   async refresh(): Promise<boolean> {
