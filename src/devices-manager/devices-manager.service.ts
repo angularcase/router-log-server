@@ -21,11 +21,14 @@ export class DevicesManagerService {
     }
 
     async update(allMacs: string[]) {
+        let somethingChanged = false;
+
         for (const whiteMac of this.whiteMacs) {
             const whiteOnline = allMacs.includes(whiteMac);
             const found = await this.actionsManager.getLast(whiteMac);
     
             if (!found || found.state !== whiteOnline) {
+                somethingChanged = true;
                 await this.actionsManager.save({
                     mac: whiteMac,
                     state: whiteOnline,
@@ -33,6 +36,8 @@ export class DevicesManagerService {
                 });
             }
         }
+
+        return somethingChanged;
     }    
 
     async getDevices() {

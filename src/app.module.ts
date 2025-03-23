@@ -9,6 +9,7 @@ import { ActionsManagerService } from './actions-manager/actions-manager.service
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceSchema } from './mongoose/device.schema';
 import { ScheduleModule } from '@nestjs/schedule';
+import { WebsocketGateway } from './websocket/websocket.gateway';
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot()
   ],
   controllers: [AppController, RouterController],
-  providers: [AppService, AsusRouterService, DevicesManagerService, ActionsManagerService],
+  providers: [AppService, AsusRouterService, DevicesManagerService, ActionsManagerService, WebsocketGateway],
 })
 export class AppModule {}
