@@ -23,7 +23,7 @@ export class ActionsManagerService {
   }
 
   getArchive() {
-    const all = this.deviceModel.find().sort({ date: -1 }).exec();
+    const all = this.deviceModel.find().sort({ date: 1 }).exec();
     return all;
   }
 }
