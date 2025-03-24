@@ -26,7 +26,7 @@ export class DevicesManagerService {
         await this.actionsManager.save({
           mac: whiteMac,
           state: whiteOnline,
-          date: new Date().toISOString(),
+          date: new Date(),
         });
       }
     }
@@ -46,8 +46,8 @@ export class DevicesManagerService {
     return reply;
   }
 
-  async getArchive() {
-    const archive = await this.actionsManager.getArchive();
+  async getArchive(from?: Date, to?: Date) {
+    const archive = await this.actionsManager.getArchive(from, to);
     return archive;
   }
 }
@@ -55,5 +55,5 @@ export class DevicesManagerService {
 export interface Device {
   mac: string;
   state: boolean;
-  date: string;
+  date: Date;
 }

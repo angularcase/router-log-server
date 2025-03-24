@@ -22,8 +22,23 @@ export class ActionsManagerService {
     return device;
   }
 
-  getArchive() {
-    const all = this.deviceModel.find().sort({ date: 1 }).exec();
-    return all;
-  }
+  async getArchive(from?: Date, to?: Date): Promise<Device[] | null> {
+    const filter: any = {};
+  
+    if (from && to) {
+      filter.date = { $gte: from, $lte: to };
+    } else if (from) {
+      filter.date = { $gte: from };
+    } else if (to) {
+      filter.date = { $lte: to };
+    }
+
+    this.logger.log(filter);
+  
+    return this.deviceModel
+      .find(filter)
+      .sort({ date: 1 })
+      .exec();
+  }  
+
 }
