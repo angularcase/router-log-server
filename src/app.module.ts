@@ -13,12 +13,10 @@ import { WebsocketGateway } from './websocket/websocket.gateway';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(
-      {
-        isGlobal: true,
-        envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
-      }
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -27,9 +25,15 @@ import { WebsocketGateway } from './websocket/websocket.gateway';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: 'Device', schema: DeviceSchema }]),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController, RouterController],
-  providers: [AppService, AsusRouterService, DevicesManagerService, ActionsManagerService, WebsocketGateway],
+  providers: [
+    AppService,
+    AsusRouterService,
+    DevicesManagerService,
+    ActionsManagerService,
+    WebsocketGateway,
+  ],
 })
 export class AppModule {}
