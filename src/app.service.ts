@@ -23,10 +23,12 @@ export class AppService implements OnModuleInit {
     private websocketGateway: WebsocketGateway
   ) {}
 
-  async onModuleInit() {
+  onModuleInit() {
     this.websocketGateway.setOnGatewayConnectionAction(async () => {
       const devices = await this.devicesManager.getDevices();
-      this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
+
+      return devices;
+      // this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
     });
   }
 
