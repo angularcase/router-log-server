@@ -6,7 +6,6 @@ import { MessageId, WebsocketGateway } from './websocket/websocket.gateway';
 
 @Injectable()
 export class AppService implements OnModuleInit {
-
   private readonly logger = new Logger(AppService.name);
 
   @Interval(10000)
@@ -20,7 +19,7 @@ export class AppService implements OnModuleInit {
   constructor(
     private devicesManager: DevicesManagerService,
     private routerService: AsusRouterService,
-    private websocketGateway: WebsocketGateway
+    private websocketGateway: WebsocketGateway,
   ) {}
 
   onModuleInit() {
@@ -46,5 +45,4 @@ export class AppService implements OnModuleInit {
 
     return somethingChanged;
   }
-
 }

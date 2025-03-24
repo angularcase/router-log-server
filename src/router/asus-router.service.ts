@@ -13,8 +13,8 @@ export class AsusRouterService implements RouterService {
 
   async getConnectedMacs(): Promise<string[]> {
     const raw = await this.getConnectedMacsRaw();
-    const devices: string[] = Object.keys(raw);
-    return devices;
+    const macs: string[] = Object.keys(raw).map((mac) => mac.toLowerCase());
+    return macs;
   }
 
   async getConnectedMacsRaw(): Promise<any> {
