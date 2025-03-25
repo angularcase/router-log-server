@@ -24,7 +24,7 @@ export class ActionsManagerService {
 
   async getArchive(from?: Date, to?: Date): Promise<Device[] | null> {
     const filter: any = {};
-  
+
     if (from && to) {
       filter.date = { $gte: from, $lte: to };
     } else if (from) {
@@ -34,11 +34,7 @@ export class ActionsManagerService {
     }
 
     this.logger.log(filter);
-  
-    return this.deviceModel
-      .find(filter)
-      .sort({ date: 1 })
-      .exec();
-  }  
 
+    return this.deviceModel.find(filter).sort({ date: 1 }).exec();
+  }
 }

@@ -10,6 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceSchema } from './mongoose/device.schema';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WebsocketGateway } from './websocket/websocket.gateway';
+import { ArchiveService } from './archive/archive.service';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { WebsocketGateway } from './websocket/websocket.gateway';
     DevicesManagerService,
     ActionsManagerService,
     WebsocketGateway,
+    ArchiveService,
   ],
 })
 export class AppModule {}
