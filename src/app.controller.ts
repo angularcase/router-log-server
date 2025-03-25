@@ -25,9 +25,19 @@ export class AppController {
   
     return this.devicesManager.getArchive(parsedFrom, parsedTo);
   }
+
+  @Get('/get-archive-new')
+  getArchiveNew(@Query() query: GetArchiveNewDto) {
+    return this.devicesManager.getArchiveNew(query.from, query.to);
+  }
 }
 
 export interface GetArchiveDto {
   from?: Date;
   to?: Date;
+}
+
+export interface GetArchiveNewDto {
+  from: Date;
+  to: Date;
 }

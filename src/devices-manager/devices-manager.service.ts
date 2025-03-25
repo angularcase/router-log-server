@@ -61,10 +61,10 @@ export class DevicesManagerService {
    */
   async getArchiveNew(
     from: Date,
-    to: Date,
-    macs: string[],
-  ): Promise<ArchiveResult[]> {
+    to: Date): Promise<ArchiveResult[]> {
     // Pobieramy eventy z bazy w przedziale [from, to]
+      const macs = this.whiteMacs;
+
     const events: Device[] = await this.deviceRepository.find({
       mac: { $in: macs },
       date: { $gte: from, $lte: to },
