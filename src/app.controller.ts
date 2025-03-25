@@ -10,7 +10,7 @@ export class AppController {
 
   @Get('/get-connected-devices')
   getConnectedDevices() {
-    return this.devicesManager.getDevices();
+    return this.devicesManager.getDevicesState();
   }
 
   @Get('/get-archive')

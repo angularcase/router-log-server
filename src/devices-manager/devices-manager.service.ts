@@ -34,7 +34,7 @@ export class DevicesManagerService {
     return somethingChanged;
   }
 
-  async getDevices() {
+  async getDevicesState() {
     const reply: Device[] = [];
     for (const whiteMac of this.whiteMacs) {
       const found = await this.deviceRepository.getLast(whiteMac);

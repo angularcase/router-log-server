@@ -24,7 +24,7 @@ export class AppService implements OnModuleInit {
 
   onModuleInit() {
     this.websocketGateway.setOnGatewayConnectionAction(async () => {
-      const devices = await this.devicesManager.getDevices();
+      const devices = await this.devicesManager.getDevicesState();
 
       return devices;
       // this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
@@ -33,7 +33,7 @@ export class AppService implements OnModuleInit {
 
   async broadcastChanges() {
     this.logger.log('broadcastChanges');
-    const devices = await this.devicesManager.getDevices();
+    const devices = await this.devicesManager.getDevicesState();
     this.websocketGateway.emit(MessageId.ConnectedDevices, devices);
   }
 
