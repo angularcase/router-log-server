@@ -9,7 +9,7 @@ export class DevicesManagerService {
     '62:49:ef:39:b3:6d',
     '14:ac:60:df:13:63',
     '8e:3b:ae:57:0c:e4',
-    '50:14:79:39:43:21',
+    // '50:14:79:39:43:21',
   ];
 
   constructor(private deviceRepository: DeviceRepositoryService) {}
