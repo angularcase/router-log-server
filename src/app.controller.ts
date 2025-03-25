@@ -1,7 +1,5 @@
 import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { DevicesManagerService } from './devices-manager/devices-manager.service';
-import { isDate } from 'util/types';
-import { IsDate } from 'class-validator';
 
 export interface GetArchiveDto {
   // @IsDate()
