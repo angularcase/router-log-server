@@ -1,5 +1,23 @@
 import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { DevicesManagerService } from './devices-manager/devices-manager.service';
+import { isDate } from 'util/types';
+import { IsDate } from 'class-validator';
+
+export interface GetArchiveDto {
+  // @IsDate()
+  from: Date;
+
+  // @IsDate()
+  to: Date;
+}
+
+export interface GetArchiveSummaryDto {
+  // @IsDate()
+  from: Date;
+
+  // @IsDate()
+  to: Date;
+}
 
 @Controller()
 export class AppController {
@@ -8,36 +26,21 @@ export class AppController {
   
   constructor(private devicesManager: DevicesManagerService) {}
 
-  @Get('/get-connected-devices')
-  getConnectedDevices() {
+  @Get('/get-devices-state')
+  getDevicesState() {
     return this.devicesManager.getDevicesState();
   }
 
   @Get('/get-archive')
-  getArchive(@Query() query: Partial<GetArchiveDto>) {
-    const { from, to } = query;
-  
-    const parsedFrom = from ? new Date(from) : undefined;
-    const parsedTo = to ? new Date(to) : undefined;
-
-    this.logger.log(parsedFrom);
-    this.logger.log(parsedTo);
-  
-    return this.devicesManager.getArchive(parsedFrom, parsedTo);
+  getArchive(@Query() query: GetArchiveDto) {
+    return this.devicesManager.getArchive(query.from, query.to);
   }
 
-  @Get('/get-archive-new')
-  getArchiveNew(@Query() query: GetArchiveNewDto) {
-    return this.devicesManager.getArchiveNew(query.from, query.to);
+  @Get('/get-archive-summary')
+  getArchiveSummary(@Query() query: GetArchiveSummaryDto) {
+    const from = new Date(query.from);
+    const to = new Date(query.to);
+
+    return this.devicesManager.getArchiveSummary(from, to);
   }
-}
-
-export interface GetArchiveDto {
-  from?: Date;
-  to?: Date;
-}
-
-export interface GetArchiveNewDto {
-  from: Date;
-  to: Date;
 }

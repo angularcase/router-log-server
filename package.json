@@ -29,6 +29,7 @@
     "@nestjs/schedule": "^5.0.1",
     "@nestjs/websockets": "^11.0.12",
     "axios": "^1.8.4",
+    "class-validator": "^0.14.1",
     "dayjs": "^1.11.13",
     "mongoose": "^8.12.2",
     "reflect-metadata": "^0.2.2",

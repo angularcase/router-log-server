@@ -5,8 +5,8 @@ import { AsusRouterService } from './asus-router.service';
 export class RouterController {
   constructor(private readonly routerService: AsusRouterService) {}
 
-  @Get('/get-connected-devices')
-  getConnectedDevices() {
+  @Get('/get-devices-state')
+  getDevicesState() {
     return this.routerService.getConnectedMacsRaw();
   }
 }

@@ -5,12 +5,11 @@ import { AsusRouterService } from './router/asus-router.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RouterController } from './router/router.controller';
 import { DevicesManagerService } from './devices-manager/devices-manager.service';
-import { DeviceRepositoryService } from './actions-manager/actions-manager.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceSchema } from './mongoose/device.schema';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WebsocketGateway } from './websocket/websocket.gateway';
-import { ArchiveService } from './archive/archive.service';
+import { DeviceRepositoryService } from './device-repository/device-repository.service';
 
 @Module({
   imports: [
@@ -34,8 +33,7 @@ import { ArchiveService } from './archive/archive.service';
     AsusRouterService,
     DevicesManagerService,
     DeviceRepositoryService,
-    WebsocketGateway,
-    ArchiveService,
+    WebsocketGateway
   ],
 })
 export class AppModule {}

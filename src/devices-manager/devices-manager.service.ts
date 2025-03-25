@@ -46,20 +46,22 @@ export class DevicesManagerService {
     return reply;
   }
 
-  async getArchive(from?: Date, to?: Date) {
-    const archive = await this.deviceRepository.getArchive(from, to);
-    return archive;
+  async getArchiveSummary(from: Date, to: Date): Promise<ArchiveSummaryResult[]> {
+    const archive = await this.getArchive(from, to);
+  
+    const summary: ArchiveSummaryResult[] = archive.map(({ mac, ranges }) => {
+      const seconds = ranges.reduce((acc, range) => {
+        const duration = (range.to.getTime() - range.from.getTime()) / 1000;
+        return acc + duration;
+      }, 0);
+  
+      return { mac, seconds };
+    });
+  
+    return summary;
   }
-
-  /**
-   * Metoda getArchive zwraca dla zadanych maców oraz przedziału czasu [from, to]
-   * listę przedziałów aktywności (ranges), przy czym:
-   *  - Jeśli aktywacja miała miejsce przed "from", zakres zaczyna się od "from".
-   *  - Jeśli dezaktywacja nastąpiła po "to", zakres kończy się na "to".
-   *  - Jeśli urządzenie było aktywne przez cały okres [from, to],
-   *    zwracany jest przedział [from, to].
-   */
-  async getArchiveNew(
+  
+  async getArchive(
     from: Date,
     to: Date): Promise<ArchiveResult[]> {
     // Pobieramy eventy z bazy w przedziale [from, to]
@@ -140,6 +142,11 @@ export class DevicesManagerService {
 
     return results;
   }
+}
+
+export interface ArchiveSummaryResult {
+  mac: string;
+  seconds: number;
 }
 
 export interface Device {
