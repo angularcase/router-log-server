@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Device } from 'src/devices-manager/devices-manager.service';
 
 @Injectable()
-export class ActionsManagerService {
-  private readonly logger = new Logger(ActionsManagerService.name);
+export class DeviceRepositoryService {
+  private readonly logger = new Logger(DeviceRepositoryService.name);
 
   constructor(
     @InjectModel('Device') private readonly deviceModel: Model<Device>,
@@ -36,5 +36,17 @@ export class ActionsManagerService {
     this.logger.log(filter);
 
     return this.deviceModel.find(filter).sort({ date: 1 }).exec();
+  }
+
+  async find(query: any): Promise<Device[]> {
+    return this.deviceModel.find(query).exec();
+  }
+
+  async findOne(query: any, options?: any): Promise<Device | null> {
+    let queryBuilder = this.deviceModel.findOne(query);
+    if (options && options.sort) {
+      queryBuilder = queryBuilder.sort(options.sort);
+    }
+    return queryBuilder.exec();
   }
 }
