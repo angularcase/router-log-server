@@ -2,18 +2,12 @@ import { Controller, Get, Logger, Query } from '@nestjs/common';
 import { DevicesManagerService } from './devices-manager/devices-manager.service';
 
 export interface GetArchiveDto {
-  // @IsDate()
   from: Date;
-
-  // @IsDate()
   to: Date;
 }
 
 export interface GetArchiveSummaryDto {
-  // @IsDate()
   from: Date;
-
-  // @IsDate()
   to: Date;
 }
 
