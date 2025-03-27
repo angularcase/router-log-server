@@ -25,7 +25,9 @@ export class AppController {
 
   @Get('/get-archive')
   getArchive(@Query() query: GetArchiveDto) {
-    return this.devicesManager.getArchive(query.from, query.to);
+    const from = new Date(query.from);
+    const to = new Date(query.to);
+    return this.devicesManager.getArchive(from, to);
   }
 
   @Get('/get-archive-summary')
